@@ -42,10 +42,9 @@ install_debian() {
   DEBIAN_FRONTEND=noninteractive apt-get install -y "${DEBIAN_PACKAGES[@]}"
 
   # Enable and start vnstat if installed
-  if systemctl list-unit-files | grep -q "^vnstat"; then
-    info "Enabling and starting vnstat service..."
-    systemctl enable --now vnstat || true
-  fi
+  info "Enabling and starting vnstat service..."
+  systemctl enable --now vnstat || true
+  
 
   # Some distros use 'iptraf' instead of 'iptraf-ng'
   if ! command -v iptraf-ng >/dev/null 2>&1 && command -v iptraf >/dev/null 2>&1; then
@@ -79,10 +78,9 @@ install_rhel() {
   fi
 
   # vnstat service enable if present
-  if systemctl list-unit-files | grep -q "^vnstat"; then
-    info "Enabling and starting vnstat service..."
-    systemctl enable --now vnstat || true
-  fi
+  info "Enabling and starting vnstat service..."
+  systemctl enable --now vnstat || true
+  systemctl enable --now vnstatd || true
 }
 
 main() {
@@ -127,7 +125,7 @@ Examples:
 
 USAGE
 
-  info "Done. If you want, I can modify the script to:
+  info "Done. If you want, You can modify the script to:
   - install only a subset of tools
   - enable firewall rules for monitoring ports
   - add a systemd timer or cron to collect vnstat reports
